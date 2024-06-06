@@ -37,11 +37,6 @@ func getCommands() map[string]cliCommand {
 	}
 }
 
-type cfg struct {
-	nextPage *string
-	prevPage *string
-}
-
 func startRepl(config *cfg) {
 	scanner := bufio.NewScanner(os.Stdin)
 mainloop:

@@ -19,7 +19,7 @@ func commandExit(config *cfg) error {
 }
 
 func commandMapf(config *cfg) error {
-	locations, err := pokeapi.GetLocations(*config.nextPage)
+	locations, err := pokeapi.GetLocations(*config.nextPage, config.cache)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func commandMapb(config *cfg) error {
 	if config.prevPage == nil || *config.prevPage == "" {
 		return errors.New("No Previous Map Available")
 	}
-	locations, err := pokeapi.GetLocations(*config.prevPage)
+	locations, err := pokeapi.GetLocations(*config.prevPage, config.cache)
 	if err != nil {
 		return err
 	}
