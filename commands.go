@@ -3,6 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
+	"math/rand"
+
 	"github.com/saubuny/pokedex-cli/internal/pokeapi"
 )
 
@@ -56,13 +59,32 @@ func commandMapb(config *cfg) error {
 	return nil
 }
 
-func commandExplore(config *cfg) error {
-	locationInfo, err := pokeapi.GetLocationInfo(*config.location, config.cache)
+func commandCatch(config *cfg) error {
+	pokemon, err := pokeapi.GetPokemonInfo(*config.arg, config.cache)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Exploring", *config.location)
+	fmt.Println("Throwing a pokeball at", *config.arg)
+	upper := math.Pow(float64(pokemon.BaseExperience), 1.2)
+	num := rand.Intn(int(upper))
+	if num <= pokemon.BaseExperience {
+		fmt.Println("Caught", *config.arg)
+		config.pokedex[pokemon.Name] = pokemon
+	} else {
+		fmt.Println("Failed to catch", *config.arg)
+	}
+
+	return nil
+}
+
+func commandExplore(config *cfg) error {
+	locationInfo, err := pokeapi.GetLocationInfo(*config.arg, config.cache)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Exploring", *config.arg)
 	fmt.Println("Found Pokemon:")
 	for _, encounter := range locationInfo.PokemonEncounters {
 		fmt.Println("\t-", encounter.Pokemon.Name)

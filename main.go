@@ -1,15 +1,18 @@
 package main
 
 import (
-	"github.com/saubuny/pokedex-cli/internal/pokecache"
 	"time"
+
+	"github.com/saubuny/pokedex-cli/internal/pokeapi"
+	"github.com/saubuny/pokedex-cli/internal/pokecache"
 )
 
 type cfg struct {
 	cache    *pokecache.Cache
 	nextPage *string
 	prevPage *string
-	location *string
+	arg      *string
+	pokedex  map[string]pokeapi.Pokemon
 }
 
 func main() {
@@ -19,6 +22,7 @@ func main() {
 		&baseUrl,
 		nil,
 		nil,
+		map[string]pokeapi.Pokemon{},
 	}
 
 	startRepl(&config)

@@ -40,6 +40,11 @@ func getCommands() map[string]cliCommand {
 			description: "Explore a given location",
 			callback:    commandExplore,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Attempt to catch a given pokemon",
+			callback:    commandCatch,
+		},
 	}
 }
 
@@ -52,12 +57,13 @@ mainloop:
 			input := strings.Split(scanner.Text(), " ")
 			cmd, ok := getCommands()[input[0]]
 
-			if cmd.name == "explore" {
-				if len(input) != 2 {
-					fmt.Println("Command `explore` requires a single location argument")
+			if cmd.name == "explore" || cmd.name == "catch" {
+				if len(input) != 2 || input[1] == "" {
+					fmt.Println("Command requires a single argument")
 					break
 				}
-				config.location = &input[1]
+
+				config.arg = &input[1]
 			}
 
 			if ok {
