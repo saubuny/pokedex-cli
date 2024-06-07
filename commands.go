@@ -92,3 +92,32 @@ func commandExplore(config *cfg) error {
 
 	return nil
 }
+
+func commandInspect(config *cfg) error {
+	pokemon, ok := config.pokedex[*config.arg]
+	if !ok {
+		return errors.New("Pokemon not found in Pokedex")
+	}
+
+	fmt.Println("Name:", pokemon.Name)
+	fmt.Println("Height:", pokemon.Height)
+	fmt.Println("Weight:", pokemon.Weight)
+	fmt.Println("Stats:")
+	for i := range pokemon.Stats {
+		fmt.Println("\t-", pokemon.Stats[i].BaseStat, pokemon.Stats[i].Stat.Name)
+	}
+	fmt.Println("Types:")
+	for i := range pokemon.Types {
+		fmt.Println("\t-", pokemon.Types[i].Type.Name)
+	}
+
+	return nil
+}
+
+func commandPokedex(config *cfg) error {
+	fmt.Println("Caught Pokemon:")
+	for pokemon := range config.pokedex {
+		fmt.Println("\t-", pokemon)
+	}
+	return nil
+}
