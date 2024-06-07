@@ -9,6 +9,7 @@ type cfg struct {
 	cache    *pokecache.Cache
 	nextPage *string
 	prevPage *string
+	location *string
 }
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	config := cfg{
 		pokecache.NewCache(time.Duration(5 * time.Second)),
 		&baseUrl,
+		nil,
 		nil,
 	}
 

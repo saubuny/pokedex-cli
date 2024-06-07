@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type cliCommand struct {
@@ -34,6 +35,11 @@ func getCommands() map[string]cliCommand {
 			description: "Display the names of the previous 20 locations in the Pokemon world",
 			callback:    commandMapb,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a given location",
+			callback:    commandExplore,
+		},
 	}
 }
 
@@ -43,7 +49,17 @@ mainloop:
 	for {
 		fmt.Print("pokemon > ")
 		for scanner.Scan() {
-			cmd, ok := getCommands()[scanner.Text()]
+			input := strings.Split(scanner.Text(), " ")
+			cmd, ok := getCommands()[input[0]]
+
+			if cmd.name == "explore" {
+				if len(input) != 2 {
+					fmt.Println("Command `explore` requires a single location argument")
+					break
+				}
+				config.location = &input[1]
+			}
+
 			if ok {
 				err := cmd.callback(config)
 				if err != nil {
